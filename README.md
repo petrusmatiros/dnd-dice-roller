@@ -6,7 +6,7 @@
 
 ## Table of contents
   - [Game description \& objective](#game-description--objective)
-  - [Requirements](#requirements)
+  - [Dependencies](#dependencies)
   - [Install and build](#install-and-build)
   - [Notes](#notes)
 
@@ -17,9 +17,14 @@
 ## Game description & objective
  Just a simple DnD dice roller ^-^
  
+---
 
-## Requirements
-- None!
+## Dependencies
+```json
+"dependencies": {
+    "chalk": "^5.2.0"
+  }
+```
 ---
 ## Install and build
 
