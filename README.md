@@ -17,7 +17,6 @@
 ## Game description & objective
  Just a simple DnD dice roller ^-^
  
----
 
 ## Dependencies
 ```json
@@ -25,14 +24,13 @@
     "chalk": "^5.2.0"
   }
 ```
----
+
 ## Install and build
 
 ```
 npm i
 npm build
 ```
----
 
 ## Notes
 
