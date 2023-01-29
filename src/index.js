@@ -48,7 +48,21 @@ function random(min, max) {
 }
 
 /**
- * Simulates a DnD 5e roll. The simulated outputs are formatted and colored based on the specified arguments
+ * Simulates a DnD 5e roll. The simulated outputs are formatted and colored based on the specified arguments.
+ * 
+ * Valid cases:
+ * 
+ * CHECK - ADV, NORMAL, DIS (WITH BONUS)
+ * 
+ * SAVE - ADV, NORMAL, DIS (WITH MOD AND BONUS)
+ * 
+ * DAMAGE - CRIT or FLAT ROLL (WITH ABILITY)
+ * 
+ * TO HIT- ADV, NORMAL, DIS (WITH ABILITY)
+ * 
+ * INITIATIVE - ADV, NORMAL, DIS (WITH BONUS)
+ * 
+ * 
  * @param {*} amount number of dice to roll
  * @param {*} die the type of die to roll with (d4-d20)
  * @param {*} bonus added bonus based on proficiency
@@ -74,11 +88,62 @@ function roll(amount = 1, die, bonus = null, ability = null, mod = null, skill =
     return undefined;
   }
 
-  // Invalid input for spells/attacks
-  if (ability !== null && (type !== rollTypes.FLAT_ROLL || type !== rollTypes.CRIT) && (roll !== rolls.DAMAGE || roll !== rolls.TO_HIT)) {
-    console.error(`Spells/Attacks need to be rolled with roll types ${rollTypes.FLAT_ROLL} or ${rollTypes.CRIT} using ${rolls.TO_HIT} or ${rolls.DAMAGE}`);
+  // invalid input for spells/attacks
+  /* 
+  Valid cases
+  
+  
+  
+  
+  
+  */
+  // if (ability !== null && !((type === rollTypes.FLAT_ROLL || type === rollTypes.CRIT) && (roll === rolls.DAMAGE || roll === rolls.TO_HIT))) {
+  //   console.error(`Spells/Attacks need to be rolled with roll types ${rollTypes.FLAT_ROLL} or ${rollTypes.CRIT} using ${rolls.TO_HIT} or ${rolls.DAMAGE}`);
+  //   return undefined;
+  // }
+
+  
+
+  function checkValidRoll(amount, die, bonus, ability, mod, skill, roll, type) {
+    // CHECK - ADV, NORMAL, DIS (WITH SKILL AND WITH BONUS)
+    if (!(ability === null && mod === null && skill !== null && (type === rollTypes.ADVANTAGE || type === rollTypes.NORMAL || type === rollTypes.DISADVANTAGE) && roll === rolls.CHECK)) {
+      console.error(`Invalid input - a ${roll} roll must only have a skill specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`);
+      return false;
+    }
+    // SAVE - ADV, NORMAL, DIS (WITH MOD AND BONUS)
+    else if (!(ability === null && mod !== null && skill === null && (type === rollTypes.ADVANTAGE || type === rollTypes.NORMAL || type === rollTypes.DISADVANTAGE) && roll === rolls.SAVE)) {
+      console.error(`Invalid input - a ${roll} roll must only have a modifier specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`);
+      return false;
+    } 
+    // DAMAGE - CRIT or FLAT ROLL (WITH ABILITY)
+    else if (!(ability !== null && mod === null && skill === null && (type === rollTypes.CRIT || type === rollTypes.FLAT_ROLL) && roll === rolls.DAMAGE)) {
+      console.error(`Invalid input - a ${roll} must only have an ability specified, and only use the roll types ${rollTypes.CRIT} and ${rollTypes.FLAT_ROLL}`);
+      return false;
+    } 
+    // TO HIT - ADV, NORMAL, DIS (WITH ABILITY)
+    else if (!(ability !== null && mod === null && skill === null && (type === rollTypes.ADVANTAGE || type === rollTypes.NORMAL || type === rollTypes.DISADVANTAGE) && roll === rolls.TO_HIT)) {
+      console.error(`Invalid input - a ${roll} must only have an ability specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`);
+      return false;
+    } 
+    // INITIATIVE - ADV, NORMAL, DIS (WITH BONUS)
+    else if (!(ability === null && mod === null && skill === null && (type === rollTypes.ADVANTAGE || type === rollTypes.NORMAL || type === rollTypes.DISADVANTAGE) && roll === rolls.INITIATIVE)) {
+      console.error(`Invalid input - a ${roll} must have no extra arguments specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`);
+      return false;
+    }
+    return true;
+    // console.error(`An ${roll} roll should not have an ability specified and can only be used with the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`);
+    // return undefined;
+  }
+  
+  if (!checkValidRoll(amount, die, bonus, ability, mod, skill, roll, type)) {
     return undefined;
   }
+  console.log("ability:",ability) 
+  console.log("mod:",mod) 
+  console.log("skill:",skill) 
+  console.log("roll:",roll) 
+  console.log("type:",type) 
+  console.log("----------")
   // round arguments
   amount = Math.round(amount);
   die = Math.round(die);
@@ -196,4 +261,4 @@ function roll(amount = 1, die, bonus = null, ability = null, mod = null, skill =
   console.log(chalk.gray("##############################"));
 }
 
-roll(1, 20, 3, "Eldritch Blast", modifiers.CHA, skills.ACROBATICS, rolls.DAMAGE, rollTypes.ADVANTAGE);
+roll(1, 20, 3, "Eldritch Blast", modifiers.CHA, skills.ACROBATICS, rolls.TO_HIT, rollTypes.ADVANTAGE);
