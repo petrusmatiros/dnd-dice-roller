@@ -1,3 +1,5 @@
+"use strict";
+
 import chalk from "chalk";
 const rolls = {
   CHECK: "CHECK",
@@ -320,7 +322,7 @@ const input = {
   amount: 1,
   die: 20,
   bonus: 3,
-  ability: "asd",
+  ability: undefined,
   mod: modifiers.CHARISMA,
   skill: null,
   roll: rolls.SAVE,
