@@ -1,6 +1,48 @@
 "use strict";
 
 import chalk from "chalk";
+const abilities = {
+  "MAGIC_MISSILE": "Magic Missile",
+  "CURE_WOUNDS": "Cure Wounds",
+  "DETECT_MAGIC": "Detect Magic",
+  "THUNDERWAVE": "Thunderwave",
+  "BURNING_HANDS": "Burning Hands",
+  "CHARM_PERSON": "Charm Person",
+  "FLY": "Fly",
+  "INVISIBILITY": "Invisibility",
+  "WATER_WALK": "Water Walk",
+  "LIGHT": "Light",
+  "PROTECTION_FROM_EVIL_AND_GOOD": "Protection from Evil and Good",
+  "SLEEP": "Sleep",
+  "WEB": "Web",
+  "FIREBALL": "Fireball",
+  "TELEPORT": "Teleport",
+  "RAISE_DEAD": "Raise Dead",
+  "WALL_OF_FORCE": "Wall of Force",
+  "DISINTEGRATE": "Disintegrate",
+  "ELDRITCH_BLAST": "Eldritch Blast",
+  "HEX": "Hex",
+  "DISGUISE_SELF": "Disguise Self",
+  "DECEITFUL_MAGIC": "Deceptive Magic",
+  "MYSTIC_ARCANA": "Mystic Arcanum",
+  "SHADOW_BOLT": "Shadow Bolt",
+  "UNDYING_WARD": "Undying Ward",
+  "MYSTIC_SHROUD": "Mystic Shroud",
+  "DARK_ONE_S_BLESSING": "Dark One's Blessing",
+  "HELLISH_REBUKE": "Hellish Rebuke",
+  "BLACK_BLADE": "Black Blade",
+  "DEVIL'S_SIGHT": "Devil's Sight",
+  "FLEE_THE_SCENE": "Flee the Scene",
+  "CURSE_OF_THE_OTHERWORLD": "Curse of the Otherworld",
+  "HEXING_BLADE": "Hexing Blade",
+  "PACT_OF_THE_BLADE": "Pact of the Blade",
+  "MYSTIC_CHAIN": "Mystic Chain",
+  "INFERNAL_TYRANT": "Infernal Tyrant",
+  "WARLOCK_S_CALL": "Warlock's Call",
+  "MYSTIC_GATES": "Mystic Gates",
+  "DARK_ONE_S_OWN_LUCK": "Dark One's Own Luck"
+};
+
 const rolls = {
   CHECK: "CHECK",
   SAVE: "SAVE",
@@ -235,7 +277,7 @@ function roll(
     amount *= 2;
     console.log(`Rolling with ${chalk.blue(type)}`);
   } else if (type === rollTypes.FLAT_ROLL) {
-    amount = 1;
+    amount *= 1;
     console.log(`Rolling with ${chalk.whiteBright(type)}`);
   } else {
     console.log(`Rolling with ${chalk.whiteBright(type)}`);
@@ -335,14 +377,14 @@ function roll(
 
 // change value for each property, either integer, string or null
 const input = {
-  amount: 1,
-  die: -1 ,
+  amount: 2,
+  die: 20 ,
   bonus: 3,
-  ability: null,
+  ability: abilities.BLACK_BLADE,
   mod: null,
-  skill: skills.INTIMIDATION,
-  roll: rolls.CHECK,
-  type: rollTypes.NORMAL,
+  skill: null,
+  roll: rolls.DAMAGE,
+  type: rollTypes.FLAT_ROLL,
 };
 
 roll(
