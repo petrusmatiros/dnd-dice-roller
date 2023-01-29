@@ -85,7 +85,7 @@ function roll(
 ) {
   // only accept integers and strings
   checkValidInputTypes();
-  
+
   function checkValidInputTypes() {
     if (
       !Number.isInteger(die) ||
@@ -194,7 +194,6 @@ function roll(
   }
 
   if (!checkValidRoll()) {
-    console.log("CHECK DIDN'T WORK");
     return undefined;
   }
   // round arguments
@@ -250,9 +249,9 @@ function roll(
   var rollColor = ``;
 
   if (roll === rolls.CHECK) {
-    rollColor = `${chalk.magenta(roll)}`;
+    rollColor = `${chalk.whiteBright(skill.toUpperCase() + ":")} ${chalk.magenta(roll)}`;
   } else if (roll === rolls.SAVE) {
-    rollColor = `${chalk.green(roll)}`;
+    rollColor = `${chalk.whiteBright(mod.toUpperCase() + ":")} ${chalk.green(roll)}`;
   } else if (roll === rolls.DAMAGE) {
     rollColor = `${chalk.whiteBright(ability.toUpperCase() + ":")} ${chalk.red(
       roll
@@ -321,10 +320,10 @@ const input = {
   amount: 1,
   die: 20,
   bonus: 3,
-  ability: "Eldritch Blast",
-  mod: null,
+  ability: "asd",
+  mod: modifiers.CHARISMA,
   skill: null,
-  roll: rolls.TO_HIT,
+  roll: rolls.SAVE,
   type: rollTypes.ADVANTAGE,
 };
 
