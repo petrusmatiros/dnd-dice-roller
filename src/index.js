@@ -203,8 +203,24 @@ function roll(
   die = Math.round(die);
 
   // limit die value between 4-20 and amount value between 1-100
-  die = (die > 20 ? 20 : die) || (die < 4 ? 4 : die);
-  amount = (amount > 100 ? 100 : amount) || (amount < 1 ? 1 : amount);
+  const minDie = 4;
+  const maxDie = 20;
+  const minAmount = 1;
+  const maxAmount = 100;
+  if (die > maxDie) {
+    die = maxDie;
+  } else if (die <= maxDie && die >= minDie) {
+    die = die;
+  } else if (die < minDie) {
+    die = minDie;
+  }
+  if (amount > maxAmount) {
+    amount = maxAmount;
+  } else if (amount <= maxAmount && amount >= minAmount) {
+    amount = amount;
+  } else if (amount < minAmount) {
+    amount = minAmount;
+  }
 
   // check for ADVANTAGE, DISADVANTAGE, CRIT or FLAT ROLL
 
@@ -230,9 +246,9 @@ function roll(
 
   // push all rolls to total
   var total = [];
-  const lowestDie = 4;
+  
   for (let i = 0; i < amount; i++) {
-    let roll = random(lowestDie, die);
+    let roll = random(minDie, die);
     total.push(roll);
   }
   // if bonus is specified, round it, limit it and push it to total
@@ -320,13 +336,13 @@ function roll(
 // change value for each property, either integer, string or null
 const input = {
   amount: 1,
-  die: 20,
+  die: -1 ,
   bonus: 3,
-  ability: undefined,
-  mod: modifiers.CHARISMA,
-  skill: null,
-  roll: rolls.SAVE,
-  type: rollTypes.ADVANTAGE,
+  ability: null,
+  mod: null,
+  skill: skills.INTIMIDATION,
+  roll: rolls.CHECK,
+  type: rollTypes.NORMAL,
 };
 
 roll(
