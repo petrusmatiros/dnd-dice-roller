@@ -47,12 +47,19 @@ function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-/*
- * kh - keep highest
- * kl - keep lowest
- * check, save (con, int), custom roll
+/**
+ * Simulates a DnD 5e roll. The simulated outputs are formatted and colored based on the specified arguments
+ * @param {*} amount number of dice to roll
+ * @param {*} die the type of die to roll with (d4-d20)
+ * @param {*} bonus added bonus based on proficiency
+ * @param {*} ability spell/attack to use
+ * @param {*} mod modifier to use in saves
+ * @param {*} skill skills to use for checks
+ * @param {*} roll which roll to simulate
+ * @param {*} type which roll type to use
+ * @returns undefined if input is invalid
  */
-function roll(amount = 1, die, bonus = null, mod = null, skill = null, roll = rolls.CHECK, type = rollTypes.NORMAL) {
+function roll(amount = 1, die, bonus = null, ability = null, mod = null, skill = null, roll = rolls.CHECK, type = rollTypes.NORMAL) {
   // only accept integers and strings
   if (
     !Number.isInteger(die) ||
@@ -62,21 +69,22 @@ function roll(amount = 1, die, bonus = null, mod = null, skill = null, roll = ro
     console.error("Invalid integer input");
     return undefined;
   }
-  if (typeof type !== "string" || typeof roll !== "string" || (typeof skill !== "string" && skill !== null) || (typeof mod !== "string" && mod !== null)) {
+  if (typeof type !== "string" || typeof roll !== "string" || (typeof skill !== "string" && skill !== null) || (typeof mod !== "string" && mod !== null) || (typeof ability !== "string" && ability !== null)) {
     console.error("Invalid string input");
     return undefined;
   }
 
-  // trim input strings
-  type = type.trim();
-  roll = roll.trim();
-  mod = mod.trim();
+  // Invalid input for spells/attacks
+  if (ability !== null && (type !== rollTypes.FLAT_ROLL || type !== rollTypes.CRIT) && (roll !== rolls.DAMAGE || roll !== rolls.TO_HIT)) {
+    console.error(`Spells/Attacks need to be rolled with roll types ${rollTypes.FLAT_ROLL} or ${rollTypes.CRIT} using ${rolls.TO_HIT} or ${rolls.DAMAGE}`);
+    return undefined;
+  }
   // round arguments
   amount = Math.round(amount);
   die = Math.round(die);
 
-  // limit die value between 1-20 and amount value between 1-100
-  die = (die > 20 ? 20 : die) || (die < 1 ? 1 : die);
+  // limit die value between 4-20 and amount value between 1-100
+  die = (die > 20 ? 20 : die) || (die < 4 ? 4 : die);
   amount = (amount > 100 ? 100 : amount) || (amount < 1 ? 1 : amount);
 
   // check for ADVANTAGE, DISADVANTAGE, CRIT or FLAT ROLL
@@ -97,12 +105,15 @@ function roll(amount = 1, die, bonus = null, mod = null, skill = null, roll = ro
   } else {
     console.log(`Rolling with ${chalk.whiteBright(type)}`);
   }
+
   console.log(chalk.italic(`amount: ${amount}`));
   console.log(chalk.italic(`die: d${die}`));
+
   // push all rolls to total
   var total = [];
+  const lowestDie = 4;
   for (let i = 0; i < amount; i++) {
-    let roll = random(1, die);
+    let roll = random(lowestDie, die);
     total.push(roll);
   }
   // if bonus is specified, round it, limit it and push it to total
@@ -115,6 +126,7 @@ function roll(amount = 1, die, bonus = null, mod = null, skill = null, roll = ro
       total.push(bonus);
     }
   }
+
   console.log(chalk.gray("##############################"));
   // calculate sum, print out the calculation and roll format
   var rollColor = ``;
@@ -126,12 +138,10 @@ function roll(amount = 1, die, bonus = null, mod = null, skill = null, roll = ro
     rollColor = `${chalk.green(roll)}`;
   }
   else if (roll === rolls.DAMAGE) {
-    var ability = ``;
-    rollColor = `${chalk.whiteBright(ability+":")} ${chalk.red(roll)}`;
+    rollColor = `${chalk.whiteBright(ability.toUpperCase()+":")} ${chalk.red(roll)}`;
   }
   else if (roll === rolls.TO_HIT) {
-    var ability = ``;
-    rollColor = `${chalk.whiteBright(ability+":")} ${chalk.blue(roll)}`;
+    rollColor = `${chalk.whiteBright(ability.toUpperCase()+":")} ${chalk.blue(roll)}`;
   }
   else if (roll === rolls.INITIATIVE) {
     rollColor = `${chalk.whiteBright(roll + ":")} ${chalk.hex("#eba023").visible("ROLL")}`;
@@ -186,4 +196,4 @@ function roll(amount = 1, die, bonus = null, mod = null, skill = null, roll = ro
   console.log(chalk.gray("##############################"));
 }
 
-roll(1, 20, 3, modifiers.CHA, skills.ACROBATICS, rolls.DAMAGE, rollTypes.ADVANTAGE);
+roll(1, 20, 3, "Eldritch Blast", modifiers.CHA, skills.ACROBATICS, rolls.DAMAGE, rollTypes.ADVANTAGE);
