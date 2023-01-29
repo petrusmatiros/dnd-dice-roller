@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "dnd-dice-roller",
   "version": "1.0.0",
   "description": "a DnD inspired terminal based application, allowing you to simulate DnD dice rolls",
