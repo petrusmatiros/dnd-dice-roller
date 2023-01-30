@@ -175,6 +175,16 @@ function roll(
   } else if (die < minDie) {
     die = minDie;
   }
+  const allowedDies = [4, 6, 8, 10, 12, 20];
+  getNearestAllowedDie();
+  function getNearestAllowedDie() {
+    let randomNumber = Math.round(Math.random() * 20);
+    let nearestAllowed = allowedDies.reduce((prev, curr) => {
+      return Math.abs(curr - randomNumber) < Math.abs(prev - randomNumber) ? curr : prev;
+    });
+    die = nearestAllowed;
+  }
+
   if (amount > maxAmount) {
     amount = maxAmount;
   } else if (amount < minAmount) {
