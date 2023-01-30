@@ -114,7 +114,7 @@ function random(min, max) {
  *
  * @param {*} amount number of dice to roll
  * @param {*} die the type of die to roll with (d4-d20)
- * @param {*} bonus added bonus based on proficiency
+ * @param {*} bonus added bonus based on proficiency (- or +)
  * @param {*} ability spell/attack to use
  * @param {*} mod modifier to use in saves
  * @param {*} skill skills to use for checks
@@ -210,12 +210,12 @@ function roll(
     let roll = random(minDie, die);
     total.push(roll);
   }
-  const minBonus = 1;
+  const minBonus = 0;
   const maxBonus = 30;
-  bonus = Math.round(Math.abs(bonus));
+  bonus = Math.round(bonus);
   if (bonus > maxBonus) {
     bonus = maxBonus;
-  } else if (bonus < minBonus) {
+  } else if (bonus == minBonus) {
     bonus = null;
   }
   // if bonus is specified, round it, limit it and push it to total
@@ -257,13 +257,17 @@ function roll(
 
   var result;
   var toPrint = "";
+  var bonusSign = "+";
+  if (bonus < minBonus) {
+    bonusSign = "";
+  }
   if (type === rollTypes.ADVANTAGE) {
     result = Math.max(total[0], total[1]);
     if (bonus !== null) {
       result += bonus;
       toPrint = `[${total[0]},${total[1]}] + ${bonus}`;
       console.log(chalk.whiteBright(toPrint + ` = ${chalk.bold(result)}`));
-      console.log(chalk.gray(`${amount}d${die}kh1+${bonus}`));
+      console.log(chalk.gray(`${amount}d${die}kh1${bonusSign}${bonus}`));
     } else {
       toPrint = `[${total[0]},${total[1]}]`;
       console.log(chalk.whiteBright(toPrint + ` = ${chalk.bold(result)}`));
@@ -275,7 +279,7 @@ function roll(
       result += bonus;
       toPrint = `[${total[0]},${total[1]}] + ${bonus}`;
       console.log(chalk.whiteBright(toPrint + ` = ${chalk.bold(result)}`));
-      console.log(chalk.gray(`${amount}d${die}kl1+${bonus}`));
+      console.log(chalk.gray(`${amount}d${die}kl1${bonusSign}${bonus}`));
     } else {
       toPrint = `[${total[0]},${total[1]}]`;
       console.log(chalk.whiteBright(toPrint + ` = ${chalk.bold(result)}`));
@@ -293,7 +297,7 @@ function roll(
     toPrint = toPrint.substring(0, toPrint.length - 2);
     console.log(chalk.whiteBright(toPrint + `= ${chalk.bold(result)}`));
     if (bonus !== null) {
-      console.log(chalk.gray(`${amount}d${die}+${bonus}`));
+      console.log(chalk.gray(`${amount}d${die}${bonusSign}${bonus}`));
     } else {
       console.log(chalk.gray(`${amount}d${die}`));
     }
@@ -464,31 +468,31 @@ function checkValidRoll(ability, mod, skill, roll, type, toPrint = true) {
 
 function diceRoll() {
   // Random roles
-  var inputs = generateValidRandomInputs(1000);
-  console.log(inputs.length);
+  // var inputs = generateValidRandomInputs(1000);
+  // console.log(inputs.length);
   
-  for (let i = 0; i < inputs.length; i++) {
-    console.log("\n-------------");
-    console.log("\nRoll number:", i)
-    roll(
-    inputs[i].amount,
-    inputs[i].die,
-    inputs[i].bonus,
-    inputs[i].ability,
-    inputs[i].mod,
-    inputs[i].skill,
-    inputs[i].roll,
-    inputs[i].type
-  );
-  }
+  // for (let i = 0; i < inputs.length; i++) {
+  //   console.log("\n-------------");
+  //   console.log("\nRoll number:", i)
+  //   roll(
+  //     inputs[i].amount,
+  //     inputs[i].die,
+  //     inputs[i].bonus,
+  //     inputs[i].ability,
+  //     inputs[i].mod,
+  //     inputs[i].skill,
+  //     inputs[i].roll,
+  //     inputs[i].type
+  //   );
+  // }
   
   // SINGLE ROLL
   // change value for each property, either integer, string or null
-  /*
+  
   const input = {
     amount: 2,
     die: 20,
-    bonus: null,
+    bonus: -1,
     ability: null,
     mod: null,
     skill: skills.ARCANA,
@@ -506,7 +510,7 @@ function diceRoll() {
     input.roll,
     input.type
   );
-  */
+  
 }
 
 diceRoll();
