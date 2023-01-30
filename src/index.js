@@ -351,7 +351,7 @@ function generateValidRandomInputs(amount = 1) {
         inputs[i].skill,
         inputs[i].roll,
         inputs[i].type,
-        false,
+        false
       )
     ) {
       valid.push({
@@ -466,51 +466,52 @@ function checkValidRoll(ability, mod, skill, roll, type, toPrint = true) {
   }
 }
 
-function diceRoll() {
-  // Random roles
-  // var inputs = generateValidRandomInputs(1000);
-  // console.log(inputs.length);
-  
-  // for (let i = 0; i < inputs.length; i++) {
-  //   console.log("\n-------------");
-  //   console.log("\nRoll number:", i)
-  //   roll(
-  //     inputs[i].amount,
-  //     inputs[i].die,
-  //     inputs[i].bonus,
-  //     inputs[i].ability,
-  //     inputs[i].mod,
-  //     inputs[i].skill,
-  //     inputs[i].roll,
-  //     inputs[i].type
-  //   );
-  // }
-  
-  // SINGLE ROLL
-  // change value for each property, either integer, string or null
-  
-  const input = {
-    amount: 2,
-    die: 20,
-    bonus: -1,
-    ability: null,
-    mod: null,
-    skill: skills.ARCANA,
-    roll: rolls.CHECK,
-    type: rollTypes.NORMAL,
-  };
-  
-  roll(
-    input.amount,
-    input.die,
-    input.bonus,
-    input.ability,
-    input.mod,
-    input.skill,
-    input.roll,
-    input.type
-  );
-  
+function diceRoll(random = false) {
+  if (random) {
+    // Random rolls
+    var inputs = generateValidRandomInputs(1000);
+    console.log(inputs.length);
+
+    for (let i = 0; i < inputs.length; i++) {
+      console.log("\n-------------");
+      console.log("\nRoll number:", i);
+      roll(
+        inputs[i].amount,
+        inputs[i].die,
+        inputs[i].bonus,
+        inputs[i].ability,
+        inputs[i].mod,
+        inputs[i].skill,
+        inputs[i].roll,
+        inputs[i].type
+      );
+    }
+  } else {
+    // SINGLE ROLL
+    // change value for each property, either integer, string or null
+
+    const input = {
+      amount: 2,
+      die: 20,
+      bonus: -1,
+      ability: null,
+      mod: null,
+      skill: skills.ARCANA,
+      roll: rolls.CHECK,
+      type: rollTypes.NORMAL,
+    };
+
+    roll(
+      input.amount,
+      input.die,
+      input.bonus,
+      input.ability,
+      input.mod,
+      input.skill,
+      input.roll,
+      input.type
+    );
+  }
 }
 
 diceRoll();
