@@ -2,48 +2,50 @@
 
 import chalk from "chalk";
 const abilities = {
-  "MAGIC_MISSILE": "Magic Missile",
-  "CURE_WOUNDS": "Cure Wounds",
-  "DETECT_MAGIC": "Detect Magic",
-  "THUNDERWAVE": "Thunderwave",
-  "BURNING_HANDS": "Burning Hands",
-  "CHARM_PERSON": "Charm Person",
-  "FLY": "Fly",
-  "INVISIBILITY": "Invisibility",
-  "WATER_WALK": "Water Walk",
-  "LIGHT": "Light",
-  "PROTECTION_FROM_EVIL_AND_GOOD": "Protection from Evil and Good",
-  "SLEEP": "Sleep",
-  "WEB": "Web",
-  "FIREBALL": "Fireball",
-  "TELEPORT": "Teleport",
-  "RAISE_DEAD": "Raise Dead",
-  "WALL_OF_FORCE": "Wall of Force",
-  "DISINTEGRATE": "Disintegrate",
-  "ELDRITCH_BLAST": "Eldritch Blast",
-  "HEX": "Hex",
-  "DISGUISE_SELF": "Disguise Self",
-  "DECEITFUL_MAGIC": "Deceptive Magic",
-  "MYSTIC_ARCANA": "Mystic Arcanum",
-  "SHADOW_BOLT": "Shadow Bolt",
-  "UNDYING_WARD": "Undying Ward",
-  "MYSTIC_SHROUD": "Mystic Shroud",
-  "DARK_ONE_S_BLESSING": "Dark One's Blessing",
-  "HELLISH_REBUKE": "Hellish Rebuke",
-  "BLACK_BLADE": "Black Blade",
-  "DEVIL'S_SIGHT": "Devil's Sight",
-  "FLEE_THE_SCENE": "Flee the Scene",
-  "CURSE_OF_THE_OTHERWORLD": "Curse of the Otherworld",
-  "HEXING_BLADE": "Hexing Blade",
-  "PACT_OF_THE_BLADE": "Pact of the Blade",
-  "MYSTIC_CHAIN": "Mystic Chain",
-  "INFERNAL_TYRANT": "Infernal Tyrant",
-  "WARLOCK_S_CALL": "Warlock's Call",
-  "MYSTIC_GATES": "Mystic Gates",
-  "DARK_ONE_S_OWN_LUCK": "Dark One's Own Luck"
+  NULL: null,
+  MAGIC_MISSILE: "Magic Missile",
+  CURE_WOUNDS: "Cure Wounds",
+  DETECT_MAGIC: "Detect Magic",
+  THUNDERWAVE: "Thunderwave",
+  BURNING_HANDS: "Burning Hands",
+  CHARM_PERSON: "Charm Person",
+  FLY: "Fly",
+  INVISIBILITY: "Invisibility",
+  WATER_WALK: "Water Walk",
+  LIGHT: "Light",
+  PROTECTION_FROM_EVIL_AND_GOOD: "Protection from Evil and Good",
+  SLEEP: "Sleep",
+  WEB: "Web",
+  FIREBALL: "Fireball",
+  TELEPORT: "Teleport",
+  RAISE_DEAD: "Raise Dead",
+  WALL_OF_FORCE: "Wall of Force",
+  DISINTEGRATE: "Disintegrate",
+  ELDRITCH_BLAST: "Eldritch Blast",
+  HEX: "Hex",
+  DISGUISE_SELF: "Disguise Self",
+  DECEITFUL_MAGIC: "Deceptive Magic",
+  MYSTIC_ARCANA: "Mystic Arcanum",
+  SHADOW_BOLT: "Shadow Bolt",
+  UNDYING_WARD: "Undying Ward",
+  MYSTIC_SHROUD: "Mystic Shroud",
+  DARK_ONE_S_BLESSING: "Dark One's Blessing",
+  HELLISH_REBUKE: "Hellish Rebuke",
+  BLACK_BLADE: "Black Blade",
+  DEVILS_SIGHT: "Devil's Sight",
+  FLEE_THE_SCENE: "Flee the Scene",
+  CURSE_OF_THE_OTHERWORLD: "Curse of the Otherworld",
+  HEXING_BLADE: "Hexing Blade",
+  PACT_OF_THE_BLADE: "Pact of the Blade",
+  MYSTIC_CHAIN: "Mystic Chain",
+  INFERNAL_TYRANT: "Infernal Tyrant",
+  WARLOCK_S_CALL: "Warlock's Call",
+  MYSTIC_GATES: "Mystic Gates",
+  DARK_ONE_S_OWN_LUCK: "Dark One's Own Luck",
 };
 
 const rolls = {
+  NULL: null,
   CHECK: "CHECK",
   SAVE: "SAVE",
   DAMAGE: "DAMAGE",
@@ -51,6 +53,7 @@ const rolls = {
   INITIATIVE: "INITIATIVE",
 };
 const rollTypes = {
+  NULL: null,
   ADVANTAGE: "ADV",
   NORMAL: "NORMAL",
   DISADVANTAGE: "DIS",
@@ -59,6 +62,7 @@ const rollTypes = {
 };
 
 const modifiers = {
+  NULL: null,
   STRENGTH: "STR",
   DEXTERITY: "DEX",
   CONSTITUTION: "COM",
@@ -67,6 +71,7 @@ const modifiers = {
   CHARISMA: "CHA",
 };
 const skills = {
+  NULL: null,
   ACROBATICS: "Acrobatics",
   ANIMAL_HANDLING: "Animal Handling",
   ARCANA: "Arcana",
@@ -150,99 +155,13 @@ function roll(
       return undefined;
     }
   }
-  function checkValidRoll() {
-    if (roll === rolls.CHECK) {
-      // CHECK - ADV, NORMAL, DIS (WITH SKILL AND WITH BONUS)
-      if (
-        ability === null &&
-        mod === null &&
-        skill !== null &&
-        (type === rollTypes.ADVANTAGE ||
-          type === rollTypes.NORMAL ||
-          type === rollTypes.DISADVANTAGE)
-      ) {
-        return true;
-      } else {
-        console.error(
-          `Invalid input - a ${roll} roll must only have a skill specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`
-        );
-        return false;
-      }
-    } else if (roll === rolls.SAVE) {
-      // SAVE - ADV, NORMAL, DIS (WITH MOD AND BONUS)
-      if (
-        ability === null &&
-        mod !== null &&
-        skill === null &&
-        (type === rollTypes.ADVANTAGE ||
-          type === rollTypes.NORMAL ||
-          type === rollTypes.DISADVANTAGE)
-      ) {
-        return true;
-      } else {
-        console.error(
-          `Invalid input - a ${roll} roll must only have a modifier specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`
-        );
-        return false;
-      }
-    } else if (roll === rolls.DAMAGE) {
-      // DAMAGE - CRIT or FLAT ROLL (WITH ABILITY)
-      if (
-        ability !== null &&
-        mod === null &&
-        skill === null &&
-        (type === rollTypes.CRIT || type === rollTypes.FLAT_ROLL)
-      ) {
-        return true;
-      } else {
-        console.error(
-          `Invalid input - a ${roll} must only have an ability specified, and only use the roll types ${rollTypes.CRIT} and ${rollTypes.FLAT_ROLL}`
-        );
-        return false;
-      }
-    } else if (roll === rolls.TO_HIT) {
-      // TO HIT - ADV, NORMAL, DIS (WITH ABILITY)
-      if (
-        ability !== null &&
-        mod === null &&
-        skill === null &&
-        (type === rollTypes.ADVANTAGE ||
-          type === rollTypes.NORMAL ||
-          type === rollTypes.DISADVANTAGE)
-      ) {
-        return true;
-      } else {
-        console.error(
-          `Invalid input - a ${roll} must only have an ability specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`
-        );
-        return false;
-      }
-    } else if (roll === rolls.INITIATIVE) {
-      // INITIATIVE - ADV, NORMAL, DIS (WITH BONUS)
-      if (
-        ability === null &&
-        mod === null &&
-        skill === null &&
-        (type === rollTypes.ADVANTAGE ||
-          type === rollTypes.NORMAL ||
-          type === rollTypes.DISADVANTAGE)
-      ) {
-        return true;
-      } else {
-        console.error(
-          `Invalid input - a ${roll} must have no extra arguments specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`
-        );
-        return false;
-      }
-    }
-  }
 
-  if (!checkValidRoll()) {
+  if (!checkValidRoll(ability, mod, skill, roll, type)) {
     return undefined;
   }
   // round arguments
-  amount = Math.round(amount);
-  die = Math.round(die);
+  amount = Math.round(Math.abs(amount));
+  die = Math.round(Math.abs(die));
 
   // limit die value between 4-20 and amount value between 1-100
   const minDie = 4;
@@ -258,8 +177,6 @@ function roll(
   }
   if (amount > maxAmount) {
     amount = maxAmount;
-  } else if (amount <= maxAmount && amount >= minAmount) {
-    amount = amount;
   } else if (amount < minAmount) {
     amount = minAmount;
   }
@@ -288,15 +205,21 @@ function roll(
 
   // push all rolls to total
   var total = [];
-  
+
   for (let i = 0; i < amount; i++) {
     let roll = random(minDie, die);
     total.push(roll);
   }
+  const minBonus = 1;
+  const maxBonus = 30;
+  bonus = Math.round(Math.abs(bonus));
+  if (bonus > maxBonus) {
+    bonus = maxBonus;
+  } else if (bonus < minBonus) {
+    bonus = null;
+  }
   // if bonus is specified, round it, limit it and push it to total
   if (bonus !== null) {
-    bonus = Math.round(bonus);
-    bonus = (bonus > 20 ? 20 : bonus) || (bonus < 1 ? 1 : bonus);
     // do not include bonus for CRIT or FLAT ROLL
     if (type !== rollTypes.CRIT && type !== rollTypes.FLAT_ROLL) {
       console.log(chalk.italic(`bonus: ${bonus}`));
@@ -309,9 +232,13 @@ function roll(
   var rollColor = ``;
 
   if (roll === rolls.CHECK) {
-    rollColor = `${chalk.whiteBright(skill.toUpperCase() + ":")} ${chalk.magenta(roll)}`;
+    rollColor = `${chalk.whiteBright(
+      skill.toUpperCase() + ":"
+    )} ${chalk.magenta(roll)}`;
   } else if (roll === rolls.SAVE) {
-    rollColor = `${chalk.whiteBright(mod.toUpperCase() + ":")} ${chalk.green(roll)}`;
+    rollColor = `${chalk.whiteBright(mod.toUpperCase() + ":")} ${chalk.green(
+      roll
+    )}`;
   } else if (roll === rolls.DAMAGE) {
     rollColor = `${chalk.whiteBright(ability.toUpperCase() + ":")} ${chalk.red(
       roll
@@ -375,25 +302,211 @@ function roll(
   console.log(chalk.gray("##############################"));
 }
 
-// change value for each property, either integer, string or null
-const input = {
-  amount: 2,
-  die: 20 ,
-  bonus: 3,
-  ability: abilities.BLACK_BLADE,
-  mod: null,
-  skill: null,
-  roll: rolls.DAMAGE,
-  type: rollTypes.FLAT_ROLL,
-};
+function generateValidRandomInputs(amount = 1) {
+  if (!Number.isInteger(amount)) {
+    console.error("Invalid input");
+    return undefined;
+  }
+  amount = Math.round(Math.abs(amount));
+  var inputs = [];
+  var valid = [];
+  var minDie = 4;
+  var maxDie = 20;
+  var minAmount = 1;
+  var maxAmount = 4;
+  var minBonus = 0;
+  var maxBonus = 5;
+  var abilitiesArray = Object.values(abilities);
+  var modifiersArray = Object.values(modifiers);
+  var skillsArray = Object.values(skills);
+  var rollsArray = Object.values(rolls);
+  var rollTypesArray = Object.values(rollTypes);
+  for (let i = 0; i < amount; i++) {
+    let ability = [abilitiesArray[random(0, abilitiesArray.length - 1)], null];
+    let modifier = [modifiersArray[random(0, modifiersArray.length - 1)], null];
+    let skill = [skillsArray[random(0, skillsArray.length - 1)], null];
+    let roll = [rollsArray[random(0, rollsArray.length - 1)], null];
+    let rollType = [rollTypesArray[random(0, rollTypesArray.length - 1)], null];
 
-roll(
-  input.amount,
-  input.die,
-  input.bonus,
-  input.ability,
-  input.mod,
-  input.skill,
-  input.roll,
-  input.type
-);
+    inputs.push({
+      amount: random(minAmount, maxAmount),
+      die: random(minDie, maxDie),
+      bonus: random(minBonus, maxBonus),
+      ability: ability[random(0, 1)],
+      mod: modifier[random(0, 1)],
+      skill: skill[random(0, 1)],
+      roll: roll[random(0, 1)],
+      type: rollType[random(0, 1)],
+    });
+  }
+  for (let i = 0; i < inputs.length; i++) {
+    if (
+      checkValidRoll(
+        inputs[i].ability,
+        inputs[i].mod,
+        inputs[i].skill,
+        inputs[i].roll,
+        inputs[i].type,
+        false,
+      )
+    ) {
+      valid.push({
+        amount: inputs[i].amount,
+        die: inputs[i].die,
+        bonus: inputs[i].bonus,
+        ability: inputs[i].ability,
+        mod: inputs[i].mod,
+        skill: inputs[i].skill,
+        roll: inputs[i].roll,
+        type: inputs[i].type,
+      });
+    }
+  }
+  return valid;
+}
+
+function checkValidRoll(ability, mod, skill, roll, type, toPrint = true) {
+  if (roll === rolls.CHECK) {
+    // CHECK - ADV, NORMAL, DIS (WITH SKILL AND WITH BONUS)
+    if (
+      ability === null &&
+      mod === null &&
+      skill !== null &&
+      (type === rollTypes.ADVANTAGE ||
+        type === rollTypes.NORMAL ||
+        type === rollTypes.DISADVANTAGE)
+    ) {
+      return true;
+    } else {
+      if (toPrint) {
+        console.error(
+          `Invalid input - a ${roll} roll must only have a skill specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`
+        );
+      }
+      return false;
+    }
+  } else if (roll === rolls.SAVE) {
+    // SAVE - ADV, NORMAL, DIS (WITH MOD AND BONUS)
+    if (
+      ability === null &&
+      mod !== null &&
+      skill === null &&
+      (type === rollTypes.ADVANTAGE ||
+        type === rollTypes.NORMAL ||
+        type === rollTypes.DISADVANTAGE)
+    ) {
+      return true;
+    } else {
+      if (toPrint) {
+        console.error(
+          `Invalid input - a ${roll} roll must only have a modifier specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`
+        );
+      }
+      return false;
+    }
+  } else if (roll === rolls.DAMAGE) {
+    // DAMAGE - CRIT or FLAT ROLL (WITH ABILITY)
+    if (
+      ability !== null &&
+      mod === null &&
+      skill === null &&
+      (type === rollTypes.CRIT || type === rollTypes.FLAT_ROLL)
+    ) {
+      return true;
+    } else {
+      if (toPrint) {
+        console.error(
+          `Invalid input - a ${roll} must only have an ability specified, and only use the roll types ${rollTypes.CRIT} and ${rollTypes.FLAT_ROLL}`
+        );
+      }
+      return false;
+    }
+  } else if (roll === rolls.TO_HIT) {
+    // TO HIT - ADV, NORMAL, DIS (WITH ABILITY)
+    if (
+      ability !== null &&
+      mod === null &&
+      skill === null &&
+      (type === rollTypes.ADVANTAGE ||
+        type === rollTypes.NORMAL ||
+        type === rollTypes.DISADVANTAGE)
+    ) {
+      return true;
+    } else {
+      if (toPrint) {
+        console.error(
+          `Invalid input - a ${roll} must only have an ability specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`
+        );
+      }
+      return false;
+    }
+  } else if (roll === rolls.INITIATIVE) {
+    // INITIATIVE - ADV, NORMAL, DIS (WITH BONUS)
+    if (
+      ability === null &&
+      mod === null &&
+      skill === null &&
+      (type === rollTypes.ADVANTAGE ||
+        type === rollTypes.NORMAL ||
+        type === rollTypes.DISADVANTAGE)
+    ) {
+      return true;
+    } else {
+      if (toPrint) {
+        console.error(
+          `Invalid input - a ${roll} must have no extra arguments specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`
+        );
+      }
+      return false;
+    }
+  }
+}
+
+function diceRoll() {
+  // Random roles
+  var inputs = generateValidRandomInputs(1000);
+  console.log(inputs.length);
+  
+  for (let i = 0; i < inputs.length; i++) {
+    console.log("\n-------------");
+    console.log("\nRoll number:", i)
+    roll(
+    inputs[i].amount,
+    inputs[i].die,
+    inputs[i].bonus,
+    inputs[i].ability,
+    inputs[i].mod,
+    inputs[i].skill,
+    inputs[i].roll,
+    inputs[i].type
+  );
+  }
+  
+  // SINGLE ROLL
+  // change value for each property, either integer, string or null
+  /*
+  const input = {
+    amount: 2,
+    die: 20,
+    bonus: null,
+    ability: null,
+    mod: null,
+    skill: skills.ARCANA,
+    roll: rolls.CHECK,
+    type: rollTypes.NORMAL,
+  };
+  
+  roll(
+    input.amount,
+    input.die,
+    input.bonus,
+    input.ability,
+    input.mod,
+    input.skill,
+    input.roll,
+    input.type
+  );
+  */
+}
+
+diceRoll();
