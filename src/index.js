@@ -180,7 +180,9 @@ function roll(
   function getNearestAllowedDie() {
     let randomNumber = Math.round(Math.random() * 20);
     let nearestAllowed = allowedDies.reduce((prev, curr) => {
-      return Math.abs(curr - randomNumber) < Math.abs(prev - randomNumber) ? curr : prev;
+      return Math.abs(curr - randomNumber) < Math.abs(prev - randomNumber)
+        ? curr
+        : prev;
     });
     die = nearestAllowed;
   }
@@ -200,6 +202,8 @@ function roll(
     } else if (type === rollTypes.DISADVANTAGE) {
       console.log(`Rolling with ${chalk.red("-" + type)}`);
     }
+  } else if (roll === rolls.INITIATIVE && type === rollTypes.NORMAL) {
+    amount = 1;
   } else if (type === rollTypes.CRIT) {
     amount *= 2;
     console.log(`Rolling with ${chalk.blue(type)}`);
@@ -481,11 +485,11 @@ function diceRoll(random = false) {
     // Random rolls
     var inputs = generateValidRandomInputs(1000);
     console.log("\nGenerated rolls:", inputs.length);
-    console.log("\n")
+    console.log("\n");
 
     for (let i = 0; i < inputs.length; i++) {
       console.log("Roll number:", i);
-      console.log("-----------")
+      console.log("-----------");
       roll(
         inputs[i].amount,
         inputs[i].die,
@@ -503,14 +507,14 @@ function diceRoll(random = false) {
     // change value for each property, either integer, string or null
 
     const input = {
-      amount: 2,
+      amount: 4,
       die: 20,
       bonus: -1,
       ability: null,
       mod: null,
-      skill: skills.ARCANA,
-      roll: rolls.CHECK,
-      type: rollTypes.NORMAL,
+      skill: null,
+      roll: rolls.INITIATIVE,
+      type: rollTypes.DISADVANTAGE,
     };
 
     roll(
@@ -526,4 +530,4 @@ function diceRoll(random = false) {
   }
 }
 
-diceRoll(true);
+diceRoll(false);
