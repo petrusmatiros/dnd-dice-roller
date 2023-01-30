@@ -470,10 +470,12 @@ function diceRoll(random = false) {
   if (random) {
     // Random rolls
     var inputs = generateValidRandomInputs(1000);
-    console.log("Generated rolls:", inputs.length);
+    console.log("\nGenerated rolls:", inputs.length);
+    console.log("\n")
 
     for (let i = 0; i < inputs.length; i++) {
       console.log("Roll number:", i);
+      console.log("-----------")
       roll(
         inputs[i].amount,
         inputs[i].die,
