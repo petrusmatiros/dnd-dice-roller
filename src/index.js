@@ -470,11 +470,10 @@ function diceRoll(random = false) {
   if (random) {
     // Random rolls
     var inputs = generateValidRandomInputs(1000);
-    console.log(inputs.length);
+    console.log("Generated rolls:", inputs.length);
 
     for (let i = 0; i < inputs.length; i++) {
-      console.log("\n-------------");
-      console.log("\nRoll number:", i);
+      console.log("Roll number:", i);
       roll(
         inputs[i].amount,
         inputs[i].die,
@@ -485,6 +484,7 @@ function diceRoll(random = false) {
         inputs[i].roll,
         inputs[i].type
       );
+      console.log("---------------------------------------");
     }
   } else {
     // SINGLE ROLL
@@ -514,4 +514,4 @@ function diceRoll(random = false) {
   }
 }
 
-diceRoll();
+diceRoll(true);
