@@ -381,7 +381,6 @@ function generateValidRandomInputs(amountOfRolls = 1) {
       });
     }
   }
-  console.log(valid);
   return valid;
 }
 
