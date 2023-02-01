@@ -156,9 +156,7 @@ function roll(
     }
   }
 
-  if (!checkValidRoll(spell, ability, skill, roll, type)) {
-    return undefined;
-  }
+  
   // round arguments
   amount = Math.round(Math.abs(amount));
   die = Math.round(Math.abs(die));
@@ -191,6 +189,10 @@ function roll(
     amount = maxAmount;
   } else if (amount < minAmount) {
     amount = minAmount;
+  }
+
+  if (!checkValidRoll(amount, die, spell, ability, skill, roll, type)) {
+    return undefined;
   }
 
   // check for ADVANTAGE, DISADVANTAGE, CRIT or FLAT ROLL
@@ -383,10 +385,11 @@ function generateValidRandomInputs(amount = 1) {
   return valid;
 }
 
-function checkValidRoll(spell, ability, skill, roll, type, toPrint = true) {
+function checkValidRoll(amount, die, spell, ability, skill, roll, type, toPrint = true) {
   if (roll === rolls.CHECK) {
     // CHECK - ADV, NORMAL, DIS (WITH SKILL AND WITH BONUS)
     if (
+      die === 20 &&
       spell === null &&
       ability === null &&
       skill !== null &&
@@ -406,6 +409,7 @@ function checkValidRoll(spell, ability, skill, roll, type, toPrint = true) {
   } else if (roll === rolls.SAVE) {
     // SAVE - ADV, NORMAL, DIS (WITH MOD AND BONUS)
     if (
+      die === 20 &&
       spell === null &&
       ability !== null &&
       skill === null &&
@@ -442,6 +446,7 @@ function checkValidRoll(spell, ability, skill, roll, type, toPrint = true) {
   } else if (roll === rolls.TO_HIT) {
     // TO HIT - ADV, NORMAL, DIS (WITH ABILITY)
     if (
+      die === 20 &&
       spell !== null &&
       ability === null &&
       skill === null &&
@@ -461,6 +466,7 @@ function checkValidRoll(spell, ability, skill, roll, type, toPrint = true) {
   } else if (roll === rolls.INITIATIVE) {
     // INITIATIVE - ADV, NORMAL, DIS (WITH BONUS)
     if (
+      die === 20 &&
       spell === null &&
       ability === null &&
       skill === null &&
