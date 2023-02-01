@@ -156,7 +156,6 @@ function roll(
     }
   }
 
-  
   // round arguments
   amount = Math.round(Math.abs(amount));
   die = Math.round(Math.abs(die));
@@ -176,9 +175,8 @@ function roll(
   const allowedDies = [4, 6, 8, 10, 12, 20];
   getNearestAllowedDie();
   function getNearestAllowedDie() {
-    let randomNumber = Math.round(Math.random() * 20);
     let nearestAllowed = allowedDies.reduce((prev, curr) => {
-      return Math.abs(curr - randomNumber) < Math.abs(prev - randomNumber)
+      return Math.abs(curr - die) < Math.abs(prev - die)
         ? curr
         : prev;
     });
@@ -322,12 +320,12 @@ function roll(
   console.log(chalk.gray("##############################"));
 }
 
-function generateValidRandomInputs(amount = 1) {
-  if (!Number.isInteger(amount)) {
+function generateValidRandomInputs(amountOfRolls = 1) {
+  if (!Number.isInteger(amountOfRolls)) {
     console.error("Invalid input");
     return undefined;
   }
-  amount = Math.round(Math.abs(amount));
+  amountOfRolls = Math.round(Math.abs(amountOfRolls));
   var inputs = [];
   var valid = [];
   var minDie = 4;
@@ -341,7 +339,7 @@ function generateValidRandomInputs(amount = 1) {
   var skillsArray = Object.values(skills);
   var rollsArray = Object.values(rolls);
   var rollTypesArray = Object.values(rollTypes);
-  for (let i = 0; i < amount; i++) {
+  for (let i = 0; i < amountOfRolls; i++) {
     let die = random(minDie, maxDie);
     let spell = [spellsArray[random(0, spellsArray.length - 1)], null];
     let ability = [abilitiesArray[random(0, abilitiesArray.length - 1)], null];
@@ -360,6 +358,7 @@ function generateValidRandomInputs(amount = 1) {
       type: rollType[random(0, 1)],
     });
   }
+  
   for (let i = 0; i < inputs.length; i++) {
     if (
       checkValidRoll(
@@ -384,6 +383,7 @@ function generateValidRandomInputs(amount = 1) {
       });
     }
   }
+  console.log(valid)
   return valid;
 }
 
@@ -517,11 +517,11 @@ function diceRoll(random = false) {
     const input = {
       amount: 4,
       die: 20,
-      bonus: -1,
+      bonus: 0,
       spell: null,
       ability: null,
-      skill: null,
-      roll: rolls.INITIATIVE,
+      skill: skills.PERCEPTION,
+      roll: rolls.CHECK,
       type: rollTypes.DISADVANTAGE,
     };
 
@@ -538,4 +538,4 @@ function diceRoll(random = false) {
   }
 }
 
-diceRoll(true);
+diceRoll(false);
