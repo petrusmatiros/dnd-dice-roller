@@ -491,7 +491,7 @@ function checkValidRoll(die, spell, ability, skill, roll, type, toPrint = true) 
 function diceRoll(random = false) {
   if (random) {
     // Random rolls
-    var inputs = generateValidRandomInputs(1000);
+    var inputs = generateValidRandomInputs(5000);
     console.log("\nGenerated rolls:", inputs.length);
     console.log("\n");
 
