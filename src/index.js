@@ -191,7 +191,7 @@ function roll(
     amount = minAmount;
   }
 
-  if (!checkValidRoll(amount, die, spell, ability, skill, roll, type)) {
+  if (!checkValidRoll(die, spell, ability, skill, roll, type)) {
     return undefined;
   }
 
@@ -342,6 +342,7 @@ function generateValidRandomInputs(amount = 1) {
   var rollsArray = Object.values(rolls);
   var rollTypesArray = Object.values(rollTypes);
   for (let i = 0; i < amount; i++) {
+    let die = random(minDie, maxDie);
     let spell = [spellsArray[random(0, spellsArray.length - 1)], null];
     let ability = [abilitiesArray[random(0, abilitiesArray.length - 1)], null];
     let skill = [skillsArray[random(0, skillsArray.length - 1)], null];
@@ -350,7 +351,7 @@ function generateValidRandomInputs(amount = 1) {
 
     inputs.push({
       amount: random(minAmount, maxAmount),
-      die: random(minDie, maxDie),
+      die: die,
       bonus: random(minBonus, maxBonus),
       spell: spell[random(0, 1)],
       ability: ability[random(0, 1)],
@@ -362,6 +363,7 @@ function generateValidRandomInputs(amount = 1) {
   for (let i = 0; i < inputs.length; i++) {
     if (
       checkValidRoll(
+        inputs[i].die,
         inputs[i].spell,
         inputs[i].ability,
         inputs[i].skill,
@@ -385,7 +387,7 @@ function generateValidRandomInputs(amount = 1) {
   return valid;
 }
 
-function checkValidRoll(amount, die, spell, ability, skill, roll, type, toPrint = true) {
+function checkValidRoll(die, spell, ability, skill, roll, type, toPrint = true) {
   if (roll === rolls.CHECK) {
     // CHECK - ADV, NORMAL, DIS (WITH SKILL AND WITH BONUS)
     if (
