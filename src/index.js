@@ -187,7 +187,7 @@ function roll(
     amount = minAmount;
   }
 
-  if (!checkValidRoll(die, spell, ability, skill, roll, type)) {
+  if (!checkValidRoll(amount, die, spell, ability, skill, roll, type)) {
     return undefined;
   }
 
@@ -202,12 +202,10 @@ function roll(
     }
   } else if (roll === rolls.INITIATIVE && type === rollTypes.NORMAL) {
     amount = 1;
+    console.log(`Rolling with ${chalk.whiteBright(type)}`);
   } else if (type === rollTypes.CRIT) {
     amount *= 2;
     console.log(`Rolling with ${chalk.blue(type)}`);
-  } else if (type === rollTypes.FLAT_ROLL) {
-    amount *= 1;
-    console.log(`Rolling with ${chalk.whiteBright(type)}`);
   } else {
     console.log(`Rolling with ${chalk.whiteBright(type)}`);
   }
@@ -360,6 +358,7 @@ function generateValidRandomInputs(amountOfRolls = 1) {
   for (let i = 0; i < inputs.length; i++) {
     if (
       checkValidRoll(
+        inputs[i].amount,
         inputs[i].die,
         inputs[i].spell,
         inputs[i].ability,
@@ -385,6 +384,7 @@ function generateValidRandomInputs(amountOfRolls = 1) {
 }
 
 function checkValidRoll(
+  amount,
   die,
   spell,
   ability,
@@ -396,6 +396,7 @@ function checkValidRoll(
   if (roll === rolls.CHECK) {
     // CHECK - ADV, NORMAL, DIS (WITH SKILL AND WITH BONUS)
     if (
+      amount <= 2 &&
       die === 20 &&
       spell === null &&
       ability === null &&
@@ -416,6 +417,7 @@ function checkValidRoll(
   } else if (roll === rolls.SAVE) {
     // SAVE - ADV, NORMAL, DIS (WITH MOD AND BONUS)
     if (
+      amount <= 2 &&
       die === 20 &&
       spell === null &&
       ability !== null &&
@@ -453,6 +455,7 @@ function checkValidRoll(
   } else if (roll === rolls.TO_HIT) {
     // TO HIT - ADV, NORMAL, DIS (WITH ABILITY)
     if (
+      amount <= 2 &&
       die === 20 &&
       spell !== null &&
       ability === null &&
@@ -473,6 +476,7 @@ function checkValidRoll(
   } else if (roll === rolls.INITIATIVE) {
     // INITIATIVE - ADV, NORMAL, DIS (WITH BONUS)
     if (
+      amount <= 2 &&
       die === 20 &&
       spell === null &&
       ability === null &&
