@@ -176,9 +176,7 @@ function roll(
   getNearestAllowedDie();
   function getNearestAllowedDie() {
     let nearestAllowed = allowedDies.reduce((prev, curr) => {
-      return Math.abs(curr - die) < Math.abs(prev - die)
-        ? curr
-        : prev;
+      return Math.abs(curr - die) < Math.abs(prev - die) ? curr : prev;
     });
     die = nearestAllowed;
   }
@@ -250,9 +248,9 @@ function roll(
       skill.toUpperCase() + ":"
     )} ${chalk.magenta(roll)}`;
   } else if (roll === rolls.SAVE) {
-    rollColor = `${chalk.whiteBright(ability.toUpperCase() + ":")} ${chalk.green(
-      roll
-    )}`;
+    rollColor = `${chalk.whiteBright(
+      ability.toUpperCase() + ":"
+    )} ${chalk.green(roll)}`;
   } else if (roll === rolls.DAMAGE) {
     rollColor = `${chalk.whiteBright(spell.toUpperCase() + ":")} ${chalk.red(
       roll
@@ -358,7 +356,7 @@ function generateValidRandomInputs(amountOfRolls = 1) {
       type: rollType[random(0, 1)],
     });
   }
-  
+
   for (let i = 0; i < inputs.length; i++) {
     if (
       checkValidRoll(
@@ -383,11 +381,19 @@ function generateValidRandomInputs(amountOfRolls = 1) {
       });
     }
   }
-  console.log(valid)
+  console.log(valid);
   return valid;
 }
 
-function checkValidRoll(die, spell, ability, skill, roll, type, toPrint = true) {
+function checkValidRoll(
+  die,
+  spell,
+  ability,
+  skill,
+  roll,
+  type,
+  toPrint = true
+) {
   if (roll === rolls.CHECK) {
     // CHECK - ADV, NORMAL, DIS (WITH SKILL AND WITH BONUS)
     if (
@@ -538,4 +544,4 @@ function diceRoll(random = false) {
   }
 }
 
-diceRoll(false);
+diceRoll(true);
