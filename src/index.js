@@ -1,7 +1,7 @@
 "use strict";
 
 import chalk from "chalk";
-const abilities = {
+const spells = {
   NULL: null,
   MAGIC_MISSILE: "Magic Missile",
   CURE_WOUNDS: "Cure Wounds",
@@ -61,7 +61,7 @@ const rollTypes = {
   FLAT_ROLL: "FLAT ROLL",
 };
 
-const modifiers = {
+const abilities = {
   NULL: null,
   STRENGTH: "STR",
   DEXTERITY: "DEX",
@@ -115,8 +115,8 @@ function random(min, max) {
  * @param {*} amount number of dice to roll
  * @param {*} die the type of die to roll with (d4-d20)
  * @param {*} bonus added bonus based on proficiency (- or +)
- * @param {*} ability spell/attack to use
- * @param {*} mod modifier to use in saves
+ * @param {*} spell spell/attack to use
+ * @param {*} ability ability to use in saves
  * @param {*} skill skills to use for checks
  * @param {*} roll which roll to simulate
  * @param {*} type which roll type to use
@@ -126,8 +126,8 @@ function roll(
   amount = 1,
   die,
   bonus = null,
+  spell = null,
   ability = null,
-  mod = null,
   skill = null,
   roll = null,
   type = null
@@ -145,8 +145,8 @@ function roll(
       return undefined;
     }
     if (
+      (typeof spell !== "string" && spell !== null) ||
       (typeof ability !== "string" && ability !== null) ||
-      (typeof mod !== "string" && mod !== null) ||
       (typeof skill !== "string" && skill !== null) ||
       (typeof roll !== "string" && roll !== null) ||
       (typeof type !== "string" && type !== null)
@@ -156,7 +156,7 @@ function roll(
     }
   }
 
-  if (!checkValidRoll(ability, mod, skill, roll, type)) {
+  if (!checkValidRoll(spell, ability, skill, roll, type)) {
     return undefined;
   }
   // round arguments
@@ -250,15 +250,15 @@ function roll(
       skill.toUpperCase() + ":"
     )} ${chalk.magenta(roll)}`;
   } else if (roll === rolls.SAVE) {
-    rollColor = `${chalk.whiteBright(mod.toUpperCase() + ":")} ${chalk.green(
+    rollColor = `${chalk.whiteBright(ability.toUpperCase() + ":")} ${chalk.green(
       roll
     )}`;
   } else if (roll === rolls.DAMAGE) {
-    rollColor = `${chalk.whiteBright(ability.toUpperCase() + ":")} ${chalk.red(
+    rollColor = `${chalk.whiteBright(spell.toUpperCase() + ":")} ${chalk.red(
       roll
     )}`;
   } else if (roll === rolls.TO_HIT) {
-    rollColor = `${chalk.whiteBright(ability.toUpperCase() + ":")} ${chalk.blue(
+    rollColor = `${chalk.whiteBright(spell.toUpperCase() + ":")} ${chalk.blue(
       roll
     )}`;
   } else if (roll === rolls.INITIATIVE) {
@@ -334,14 +334,14 @@ function generateValidRandomInputs(amount = 1) {
   var maxAmount = 4;
   var minBonus = 0;
   var maxBonus = 5;
+  var spellsArray = Object.values(spells);
   var abilitiesArray = Object.values(abilities);
-  var modifiersArray = Object.values(modifiers);
   var skillsArray = Object.values(skills);
   var rollsArray = Object.values(rolls);
   var rollTypesArray = Object.values(rollTypes);
   for (let i = 0; i < amount; i++) {
+    let spell = [spellsArray[random(0, spellsArray.length - 1)], null];
     let ability = [abilitiesArray[random(0, abilitiesArray.length - 1)], null];
-    let modifier = [modifiersArray[random(0, modifiersArray.length - 1)], null];
     let skill = [skillsArray[random(0, skillsArray.length - 1)], null];
     let roll = [rollsArray[random(0, rollsArray.length - 1)], null];
     let rollType = [rollTypesArray[random(0, rollTypesArray.length - 1)], null];
@@ -350,8 +350,8 @@ function generateValidRandomInputs(amount = 1) {
       amount: random(minAmount, maxAmount),
       die: random(minDie, maxDie),
       bonus: random(minBonus, maxBonus),
+      spell: spell[random(0, 1)],
       ability: ability[random(0, 1)],
-      mod: modifier[random(0, 1)],
       skill: skill[random(0, 1)],
       roll: roll[random(0, 1)],
       type: rollType[random(0, 1)],
@@ -360,8 +360,8 @@ function generateValidRandomInputs(amount = 1) {
   for (let i = 0; i < inputs.length; i++) {
     if (
       checkValidRoll(
+        inputs[i].spell,
         inputs[i].ability,
-        inputs[i].mod,
         inputs[i].skill,
         inputs[i].roll,
         inputs[i].type,
@@ -372,8 +372,8 @@ function generateValidRandomInputs(amount = 1) {
         amount: inputs[i].amount,
         die: inputs[i].die,
         bonus: inputs[i].bonus,
+        spell: inputs[i].spell,
         ability: inputs[i].ability,
-        mod: inputs[i].mod,
         skill: inputs[i].skill,
         roll: inputs[i].roll,
         type: inputs[i].type,
@@ -383,12 +383,12 @@ function generateValidRandomInputs(amount = 1) {
   return valid;
 }
 
-function checkValidRoll(ability, mod, skill, roll, type, toPrint = true) {
+function checkValidRoll(spell, ability, skill, roll, type, toPrint = true) {
   if (roll === rolls.CHECK) {
     // CHECK - ADV, NORMAL, DIS (WITH SKILL AND WITH BONUS)
     if (
+      spell === null &&
       ability === null &&
-      mod === null &&
       skill !== null &&
       (type === rollTypes.ADVANTAGE ||
         type === rollTypes.NORMAL ||
@@ -406,8 +406,8 @@ function checkValidRoll(ability, mod, skill, roll, type, toPrint = true) {
   } else if (roll === rolls.SAVE) {
     // SAVE - ADV, NORMAL, DIS (WITH MOD AND BONUS)
     if (
-      ability === null &&
-      mod !== null &&
+      spell === null &&
+      ability !== null &&
       skill === null &&
       (type === rollTypes.ADVANTAGE ||
         type === rollTypes.NORMAL ||
@@ -417,7 +417,7 @@ function checkValidRoll(ability, mod, skill, roll, type, toPrint = true) {
     } else {
       if (toPrint) {
         console.error(
-          `Invalid input - a ${roll} roll must only have a modifier specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`
+          `Invalid input - a ${roll} roll must only have a ability specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`
         );
       }
       return false;
@@ -425,8 +425,8 @@ function checkValidRoll(ability, mod, skill, roll, type, toPrint = true) {
   } else if (roll === rolls.DAMAGE) {
     // DAMAGE - CRIT or FLAT ROLL (WITH ABILITY)
     if (
-      ability !== null &&
-      mod === null &&
+      spell !== null &&
+      ability === null &&
       skill === null &&
       (type === rollTypes.CRIT || type === rollTypes.FLAT_ROLL)
     ) {
@@ -434,7 +434,7 @@ function checkValidRoll(ability, mod, skill, roll, type, toPrint = true) {
     } else {
       if (toPrint) {
         console.error(
-          `Invalid input - a ${roll} must only have an ability specified, and only use the roll types ${rollTypes.CRIT} and ${rollTypes.FLAT_ROLL}`
+          `Invalid input - a ${roll} must only have an spell specified, and only use the roll types ${rollTypes.CRIT} and ${rollTypes.FLAT_ROLL}`
         );
       }
       return false;
@@ -442,8 +442,8 @@ function checkValidRoll(ability, mod, skill, roll, type, toPrint = true) {
   } else if (roll === rolls.TO_HIT) {
     // TO HIT - ADV, NORMAL, DIS (WITH ABILITY)
     if (
-      ability !== null &&
-      mod === null &&
+      spell !== null &&
+      ability === null &&
       skill === null &&
       (type === rollTypes.ADVANTAGE ||
         type === rollTypes.NORMAL ||
@@ -453,7 +453,7 @@ function checkValidRoll(ability, mod, skill, roll, type, toPrint = true) {
     } else {
       if (toPrint) {
         console.error(
-          `Invalid input - a ${roll} must only have an ability specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`
+          `Invalid input - a ${roll} must only have an spell specified, and only use the roll types ${rollTypes.ADVANTAGE}, ${rollTypes.NORMAL} and ${rollTypes.DISADVANTAGE}`
         );
       }
       return false;
@@ -461,8 +461,8 @@ function checkValidRoll(ability, mod, skill, roll, type, toPrint = true) {
   } else if (roll === rolls.INITIATIVE) {
     // INITIATIVE - ADV, NORMAL, DIS (WITH BONUS)
     if (
+      spell === null &&
       ability === null &&
-      mod === null &&
       skill === null &&
       (type === rollTypes.ADVANTAGE ||
         type === rollTypes.NORMAL ||
@@ -494,8 +494,8 @@ function diceRoll(random = false) {
         inputs[i].amount,
         inputs[i].die,
         inputs[i].bonus,
+        inputs[i].spell,
         inputs[i].ability,
-        inputs[i].mod,
         inputs[i].skill,
         inputs[i].roll,
         inputs[i].type
@@ -510,8 +510,8 @@ function diceRoll(random = false) {
       amount: 4,
       die: 20,
       bonus: -1,
+      spell: null,
       ability: null,
-      mod: null,
       skill: null,
       roll: rolls.INITIATIVE,
       type: rollTypes.DISADVANTAGE,
@@ -521,8 +521,8 @@ function diceRoll(random = false) {
       input.amount,
       input.die,
       input.bonus,
+      input.spell,
       input.ability,
-      input.mod,
       input.skill,
       input.roll,
       input.type
@@ -530,4 +530,4 @@ function diceRoll(random = false) {
   }
 }
 
-diceRoll(false);
+diceRoll(true);
