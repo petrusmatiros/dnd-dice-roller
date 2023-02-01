@@ -504,7 +504,7 @@ function checkValidRoll(
 function diceRoll(random = false) {
   if (random) {
     // Random rolls
-    var inputs = generateValidRandomInputs(5000);
+    var inputs = generateValidRandomInputs(10000);
     console.log("\nGenerated rolls:", inputs.length);
     console.log("\n");
 
