@@ -200,7 +200,11 @@ function roll(
     } else if (type === rollTypes.DISADVANTAGE) {
       console.log(`Rolling with ${chalk.red("-" + type)}`);
     }
-  } else if (roll === rolls.INITIATIVE && type === rollTypes.NORMAL) {
+  } else if (type === rollTypes.NORMAL && roll !== rolls.DAMAGE) {
+    amount = 1;
+    console.log(`Rolling with ${chalk.whiteBright(type)}`);
+  }
+  else if (roll === rolls.INITIATIVE && type === rollTypes.NORMAL) {
     amount = 1;
     console.log(`Rolling with ${chalk.whiteBright(type)}`);
   } else if (type === rollTypes.CRIT) {
