@@ -19,9 +19,10 @@
   "author": "Petrus Matiros",
   "license": "Copyright",
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "nodemon": "^3.1.7"
   },
   "dependencies": {
-    "chalk": "^5.2.0"
+    "chalk": "^5.2.0",
+    "dnd-dice-roller": "file:"
   }
 }

@@ -181,6 +181,7 @@ function roll(
     die = nearestAllowed;
   }
 
+
   if (amount > maxAmount) {
     amount = maxAmount;
   } else if (amount < minAmount) {
@@ -528,14 +529,14 @@ function diceRoll(random = false) {
     // change value for each property, either integer, string or null
 
     const input = {
-      amount: 4,
+      amount: 2,
       die: 20,
       bonus: 0,
       spell: null,
       ability: null,
       skill: skills.PERCEPTION,
       roll: rolls.CHECK,
-      type: rollTypes.DISADVANTAGE,
+      type: rollTypes.ADVANTAGE,
     };
 
     roll(
@@ -552,3 +553,4 @@ function diceRoll(random = false) {
 }
 
 diceRoll(true);
+
